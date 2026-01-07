@@ -1,0 +1,19 @@
+{
+  "id": "wave-pattern",
+  "name": "Wave Pattern",
+  "author": "Sample",
+  "license": "CC BY 4.0",
+  "notes": "A flowing wave pattern",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "tile": {
+    "svg": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M 10 50 Q 30 30, 50 50 T 90 50\" stroke=\"black\" stroke-width=\"1\" fill=\"none\"/><path d=\"M 10 50 Q 30 70, 50 50 T 90 50\" stroke=\"black\" stroke-width=\"1\" fill=\"none\"/></svg>",
+    "viewBox": "0 0 100 100"
+  },
+  "defaults": {
+    "stitchLengthMm": 3,
+    "gapLengthMm": 2,
+    "strokeWidthMm": 0.6,
+    "snapGridMm": 1
+  }
+}

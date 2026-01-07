@@ -1,0 +1,19 @@
+{
+  "id": "cross-stitch",
+  "name": "Cross Stitch",
+  "author": "Sample",
+  "license": "CC BY 4.0",
+  "notes": "A simple cross pattern for Sashiko stitching",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "tile": {
+    "svg": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"10\" y1=\"10\" x2=\"90\" y2=\"90\" stroke=\"black\" stroke-width=\"1\"/><line x1=\"90\" y1=\"10\" x2=\"10\" y2=\"90\" stroke=\"black\" stroke-width=\"1\"/></svg>",
+    "viewBox": "0 0 100 100"
+  },
+  "defaults": {
+    "stitchLengthMm": 3,
+    "gapLengthMm": 2,
+    "strokeWidthMm": 0.6,
+    "snapGridMm": 1
+  }
+}

@@ -1,0 +1,9 @@
+---
+description: Test file conventions
+globs: src/**/__tests__/**/*.ts, src/**/*.test.ts
+---
+
+- Vitest for testing (`describe`, `it`, `expect`)
+- Test files in `__tests__/` directories or `*.test.ts`
+- Focus on pure lib functions; mock browser APIs
+- Run with `pnpm test`

@@ -1,0 +1,10 @@
+---
+description: Project structure reference
+globs: README.md, package.json
+---
+
+- `src/components/` — React UI components
+- `src/lib/` — Pure utility functions (svg, pdf, units, patterns)
+- `src/store/` — Zustand state management
+- `src/types/` — Zod schemas and TypeScript types
+- `public/patterns/` — Pattern library JSON files

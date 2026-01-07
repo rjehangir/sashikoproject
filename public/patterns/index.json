@@ -1,0 +1,22 @@
+{
+  "patterns": [
+    {
+      "id": "cross-stitch",
+      "name": "Cross Stitch",
+      "author": "Sample",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": "wave-pattern",
+      "name": "Wave Pattern",
+      "author": "Sample",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": "diamond-grid",
+      "name": "Diamond Grid",
+      "author": "Sample",
+      "license": "CC BY 4.0"
+    }
+  ]
+}

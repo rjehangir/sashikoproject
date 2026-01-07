@@ -1,0 +1,10 @@
+---
+description: Zustand state management
+globs: src/store/**/*.ts
+---
+
+- Single store pattern via `create<AppState>()`
+- Actions defined within store, not as separate slices
+- Keep state flat; avoid deeply nested objects
+- All measurements stored in mm internally
+- Use `get()` to access current state in actions

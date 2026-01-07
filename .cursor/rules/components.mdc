@@ -1,0 +1,10 @@
+---
+description: React component conventions
+globs: src/components/**/*.tsx
+---
+
+- Functional components only, named exports preferred
+- Props interfaces defined inline or in `types/app.ts`
+- Use Zustand via `useAppStore` hook for global state
+- Tailwind CSS for styling, dark theme (gray-800/900 backgrounds)
+- Keep components focused; extract complex logic to `lib/`

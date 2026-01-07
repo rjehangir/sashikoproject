@@ -1,0 +1,11 @@
+---
+description: Utility library conventions
+globs: src/lib/**/*.ts
+---
+
+- Pure functions, no React dependencies
+- Export individual functions, not classes
+- `units.ts`: mm is canonical; convert at boundaries
+- `svg.ts`: Sanitize with DOMPurify; limited element subset
+- `pdf.ts`: Use pdf-lib; dimensions in points (72/inch)
+- `patterns.ts`: Validate with Zod schemas

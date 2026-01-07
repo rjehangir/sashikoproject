@@ -1,0 +1,10 @@
+---
+description: Pattern JSON files
+globs: public/patterns/**/*.json
+---
+
+- Validate against `PatternV1Schema` from `types/pattern.ts`
+- IDs must be kebab-case, unique across library
+- `index.json` lists all patterns with id, name, author, license
+- SVG in `tile.svg` must use allowed elements only
+- Defaults specify stitch/gap/stroke in mm

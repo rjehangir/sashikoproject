@@ -1,0 +1,9 @@
+---
+description: Type definitions
+globs: src/types/**/*.ts
+---
+
+- Zod schemas for runtime validation, infer TS types from them
+- Pattern schema is versioned (`PatternV1Schema`)
+- App types include Unit, SizeMode, PaperSize, EditorMode
+- Use `z.infer<typeof Schema>` for type extraction

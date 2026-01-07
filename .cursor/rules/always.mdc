@@ -1,0 +1,11 @@
+---
+description: Always-applied project rules
+globs: **/*
+alwaysApply: true
+---
+
+- **Stack**: React 18, TypeScript, Vite, Tailwind, Zustand, pnpm
+- **TypeScript**: Strict mode, no `any`, no unused variables
+- **Units**: Store in mm internally; convert at display/export boundaries
+- **SVG subset**: `svg`, `g`, `path`, `line`, `polyline`, `polygon`, `circle`, `rect` only
+- **Client-only**: No server code; fetch patterns from `public/patterns/` only
