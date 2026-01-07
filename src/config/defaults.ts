@@ -10,12 +10,12 @@ import * as constants from './constants';
 // ============================================================================
 
 /**
- * Default SVG content for a new pattern (simple triangle)
+ * Default SVG content for a new pattern (simple triangle with indigo thread)
  */
 export const DEFAULT_SVG_CONTENT = `<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
-  <line x1="2" y1="2.4" x2="8" y2="2.4" stroke="white" stroke-width="0.6"/>
-  <line x1="8" y1="2.4" x2="5" y2="7.6" stroke="white" stroke-width="0.6"/>
-  <line x1="5" y1="7.6" x2="2" y2="2.4" stroke="white" stroke-width="0.6"/>
+  <line x1="2" y1="2.4" x2="8" y2="2.4" stroke="#334e68" stroke-width="0.6"/>
+  <line x1="8" y1="2.4" x2="5" y2="7.6" stroke="#334e68" stroke-width="0.6"/>
+  <line x1="5" y1="7.6" x2="2" y2="2.4" stroke="#334e68" stroke-width="0.6"/>
 </svg>`;
 
 /**

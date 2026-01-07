@@ -6,13 +6,14 @@ import { extractViewBox } from '../../lib/svg';
 import { useAppStore } from '../../store';
 
 export function CodeEditor() {
-  const { svgContent, setSvgContent, setViewBox, setEditorMode, editorMode } = useAppStore(
+  const { svgContent, setSvgContent, setViewBox, setEditorMode, editorMode, theme } = useAppStore(
     (state) => ({
       svgContent: state.svgContent,
       setSvgContent: state.setSvgContent,
       setViewBox: state.setViewBox,
       setEditorMode: state.setEditorMode,
       editorMode: state.editorMode,
+      theme: state.theme,
     })
   );
 
@@ -55,12 +56,17 @@ export function CodeEditor() {
     }
   };
 
+  // Monaco theme based on app theme
+  const monacoTheme = theme === 'dark' ? 'vs-dark' : 'light';
+
   return (
-    <div className="flex flex-col h-full bg-gray-900 text-gray-100">
-      <div className="px-4 py-2 border-b border-gray-700 bg-gray-800 flex items-center justify-between">
+    <div className="flex flex-col h-full bg-cream-50 text-charcoal-900 dark:bg-charcoal-900 dark:text-cream-100">
+      <div className="px-4 py-2 border-b border-cream-200 bg-cream-100 dark:border-charcoal-700 dark:bg-charcoal-800 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">SVG Editor</h2>
-          <p className="text-sm text-gray-400">Edit your pattern tile SVG code</p>
+          <h2 className="text-lg font-semibold text-charcoal-900 dark:text-cream-50">SVG Editor</h2>
+          <p className="text-sm text-charcoal-500 dark:text-cream-400">
+            Edit your pattern tile SVG code
+          </p>
         </div>
         <div className="flex gap-2" role="group" aria-label="Editor mode selection">
           <Button
@@ -88,7 +94,7 @@ export function CodeEditor() {
           value={editorValue}
           onChange={handleChange}
           onMount={handleEditorDidMount}
-          theme="vs-dark"
+          theme={monacoTheme}
           options={{
             minimap: { enabled: false },
             fontSize: 14,

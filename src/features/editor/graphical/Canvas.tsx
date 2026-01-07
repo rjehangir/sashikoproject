@@ -26,7 +26,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(
 
     return (
       <div
-        className="flex-1 overflow-hidden"
+        className="flex-1 overflow-hidden bg-cream-200 dark:bg-charcoal-900"
         tabIndex={0}
         onKeyDown={onKeyDown}
         role="application"
@@ -36,7 +36,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(
           <svg
             ref={ref}
             viewBox={viewBox}
-            className="max-w-full max-h-full rounded"
+            className="max-w-full max-h-full rounded shadow-warm"
             preserveAspectRatio="xMidYMid meet"
             onMouseDown={onMouseDown}
             onMouseMove={onMouseMove}
@@ -49,19 +49,18 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(
               height: '100%',
               minWidth: '300px',
               minHeight: '300px',
-              backgroundColor: '#111827',
             }}
           >
-            {/* Extended drawing area background */}
+            {/* Extended drawing area background - slightly darker than main area */}
             <rect
               x={-padding}
               y={-padding}
               width={width + padding * 2}
               height={height + padding * 2}
-              fill="#0f172a"
+              className="fill-cream-300 dark:fill-charcoal-800"
             />
-            {/* Main tile area background */}
-            <rect x="0" y="0" width={width} height={height} fill="#1f2937" />
+            {/* Main tile area background - cloth-like cream color */}
+            <rect x="0" y="0" width={width} height={height} fill="#f5f5dc" />
             {children}
           </svg>
         </div>

@@ -17,6 +17,7 @@ export function GraphicalEditor() {
     setViewBox,
     snapGridMm,
     strokeWidthMm,
+    threadColor,
     activeTool,
     gridPadding,
     gridCols,
@@ -30,6 +31,7 @@ export function GraphicalEditor() {
     setViewBox: state.setViewBox,
     snapGridMm: state.snapGridMm,
     strokeWidthMm: state.strokeWidthMm,
+    threadColor: state.threadColor,
     activeTool: state.activeTool,
     gridPadding: state.gridPadding,
     gridCols: state.gridCols,
@@ -75,13 +77,13 @@ export function GraphicalEditor() {
       const linesSvg = updatedLines
         .map(
           (line) =>
-            `  <line x1="${line.x1.toFixed(2)}" y1="${line.y1.toFixed(2)}" x2="${line.x2.toFixed(2)}" y2="${line.y2.toFixed(2)}" stroke="white" stroke-width="${strokeWidthMm.toFixed(2)}"/>`
+            `  <line x1="${line.x1.toFixed(2)}" y1="${line.y1.toFixed(2)}" x2="${line.x2.toFixed(2)}" y2="${line.y2.toFixed(2)}" stroke="${threadColor}" stroke-width="${strokeWidthMm.toFixed(2)}"/>`
         )
         .join('\n');
       const newSvg = `<svg viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg">\n${linesSvg}\n</svg>`;
       setSvgContent(newSvg);
     },
-    [viewBox, setSvgContent, strokeWidthMm]
+    [viewBox, setSvgContent, strokeWidthMm, threadColor]
   );
 
   const {
@@ -135,7 +137,7 @@ export function GraphicalEditor() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 text-gray-100">
+    <div className="flex flex-col h-full bg-cream-50 text-charcoal-900 dark:bg-charcoal-900 dark:text-cream-100">
       <EditorHeader
         snapToGrid={snapToGrid}
         onSnapChange={setSnapToGrid}
@@ -156,7 +158,12 @@ export function GraphicalEditor() {
         onKeyDown={handleKeyDown}
       >
         <GridOverlay width={viewBoxWidth} height={viewBoxHeight} padding={gridPadding} />
-        <LineRenderer lines={lines} selectedLine={selectedLine} strokeWidth={strokeWidthMm} />
+        <LineRenderer
+          lines={lines}
+          selectedLine={selectedLine}
+          strokeWidth={strokeWidthMm}
+          strokeColor={threadColor}
+        />
         {isDrawing && currentLine && <DrawingLine line={currentLine} strokeWidth={strokeWidthMm} />}
       </Canvas>
     </div>

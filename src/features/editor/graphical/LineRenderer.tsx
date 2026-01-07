@@ -4,11 +4,20 @@ interface LineRendererProps {
   lines: Line[];
   selectedLine: string | null;
   strokeWidth: number;
+  strokeColor?: string;
 }
 
-export function LineRenderer({ lines, selectedLine, strokeWidth }: LineRendererProps) {
+export function LineRenderer({
+  lines,
+  selectedLine,
+  strokeWidth,
+  strokeColor = '#334e68',
+}: LineRendererProps) {
   // Scale handle size relative to stroke width
   const handleRadius = Math.max(0.2, strokeWidth * 0.5);
+
+  // Selection highlight color (indigo for selection)
+  const selectionColor = '#6366f1';
 
   // Separate lines so selected line renders last (on top)
   const nonSelectedLines = lines.filter((line) => line.id !== selectedLine);
@@ -28,7 +37,7 @@ export function LineRenderer({ lines, selectedLine, strokeWidth }: LineRendererP
               y1={line.y1}
               x2={line.x2}
               y2={line.y2}
-              stroke={isSelected ? '#60a5fa' : '#ffffff'}
+              stroke={isSelected ? selectionColor : strokeColor}
               strokeWidth={isSelected ? strokeWidth * 1.3 : strokeWidth}
               strokeLinecap="round"
             />
@@ -37,7 +46,7 @@ export function LineRenderer({ lines, selectedLine, strokeWidth }: LineRendererP
               cx={line.x1}
               cy={line.y1}
               r={handleRadius}
-              fill={isSelected ? '#60a5fa' : '#ffffff'}
+              fill={isSelected ? selectionColor : strokeColor}
               className="cursor-pointer"
               aria-label={`Start point of line ${line.id}`}
             />
@@ -46,7 +55,7 @@ export function LineRenderer({ lines, selectedLine, strokeWidth }: LineRendererP
               cx={line.x2}
               cy={line.y2}
               r={handleRadius}
-              fill={isSelected ? '#60a5fa' : '#ffffff'}
+              fill={isSelected ? selectionColor : strokeColor}
               className="cursor-pointer"
               aria-label={`End point of line ${line.id}`}
             />

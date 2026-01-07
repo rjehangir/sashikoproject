@@ -75,12 +75,14 @@ export function EditorHeader({
   }));
 
   return (
-    <div className="border-b border-gray-700 bg-gray-800">
+    <div className="border-b border-cream-200 bg-cream-100 dark:border-charcoal-700 dark:bg-charcoal-800">
       {/* Main toolbar row */}
       <div className="px-4 py-2 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Graphical Editor</h2>
-          <p className="text-sm text-gray-400">
+          <h2 className="text-lg font-semibold text-charcoal-900 dark:text-cream-50">
+            Graphical Editor
+          </h2>
+          <p className="text-sm text-charcoal-500 dark:text-cream-400">
             {activeTool === 'select'
               ? 'Click a line to select, drag handles to edit.'
               : 'Click and drag to draw lines.'}
@@ -194,8 +196,10 @@ export function EditorHeader({
 
       {/* Collapsible settings panel */}
       {settingsExpanded && (
-        <div className="px-4 py-3 bg-gray-900 border-t border-gray-700 flex items-center gap-6">
-          <span className="text-sm font-medium text-gray-300">Grid Settings:</span>
+        <div className="px-4 py-3 bg-cream-50 border-t border-cream-200 dark:bg-charcoal-900 dark:border-charcoal-700 flex items-center gap-6">
+          <span className="text-sm font-medium text-charcoal-700 dark:text-cream-200">
+            Grid Settings:
+          </span>
 
           <div className="flex items-center gap-2">
             <Select

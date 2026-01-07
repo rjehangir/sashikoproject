@@ -103,3 +103,11 @@ export type {
   UserPreferences,
   RecentPatternEntry,
 } from './storage';
+
+// ============================================================================
+// GITHUB SERVICE
+// ============================================================================
+
+export { fetchGitHubStats, formatCount } from './github';
+
+export type { GitHubStats } from './github';

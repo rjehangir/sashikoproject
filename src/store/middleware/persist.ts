@@ -42,6 +42,7 @@ export type PersistedFields = Pick<
   | 'gapLengthMm'
   | 'strokeWidthMm'
   | 'snapGridMm'
+  | 'theme'
 >;
 
 /**
@@ -72,6 +73,8 @@ export function partializeState(state: AppStore): PersistedFields {
     gapLengthMm: state.gapLengthMm,
     strokeWidthMm: state.strokeWidthMm,
     snapGridMm: state.snapGridMm,
+    // UI settings
+    theme: state.theme,
   };
 }
 

@@ -11,10 +11,12 @@ export function ExportSection({ onShowLibrary }: ExportSectionProps) {
 
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-300 mb-2">Export/Import</h3>
+      <h3 className="text-sm font-semibold text-charcoal-700 dark:text-cream-200 mb-2">
+        Export/Import
+      </h3>
       <div className="flex flex-wrap gap-2">
         <Button
-          variant="danger"
+          variant="primary"
           size="md"
           onClick={() => exportPdf()}
           disabled={isExporting}
@@ -22,26 +24,26 @@ export function ExportSection({ onShowLibrary }: ExportSectionProps) {
         >
           {isExporting ? 'Exporting...' : 'Export PDF'}
         </Button>
-        <Button variant="violet" size="md" onClick={exportJson} aria-label="Export pattern as JSON">
+        <Button
+          variant="secondary"
+          size="md"
+          onClick={exportJson}
+          aria-label="Export pattern as JSON"
+        >
           Export JSON
         </Button>
         <Button
-          variant="slate"
+          variant="secondary"
           size="md"
           onClick={importJson}
           aria-label="Import pattern from JSON file"
         >
           Import JSON
         </Button>
-        <Button variant="slate" size="md" onClick={importSvg} aria-label="Import SVG file">
+        <Button variant="secondary" size="md" onClick={importSvg} aria-label="Import SVG file">
           Import SVG
         </Button>
-        <Button
-          variant="fuchsia"
-          size="md"
-          onClick={onShowLibrary}
-          aria-label="Open pattern library"
-        >
+        <Button variant="ghost" size="md" onClick={onShowLibrary} aria-label="Open pattern library">
           Library
         </Button>
       </div>

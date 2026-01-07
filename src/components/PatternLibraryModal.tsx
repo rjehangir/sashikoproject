@@ -247,12 +247,12 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
 
   const footer = (
     <div className="flex justify-between w-full">
-      <div className="text-sm text-gray-400">
+      <div className="text-sm text-charcoal-500 dark:text-cream-400">
         {useSupabase
           ? `${filteredPatterns.length} patterns available`
           : `${staticIndex?.patterns.length ?? 0} patterns available`}
       </div>
-      <Button variant="slate" size="lg" onClick={onClose}>
+      <Button variant="secondary" size="lg" onClick={onClose}>
         Close
       </Button>
     </div>
@@ -262,13 +262,13 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
     <>
       <Modal isOpen title="Pattern Library" onClose={onClose} footer={footer}>
         {/* Tabs */}
-        <div className="flex gap-1 mb-4 bg-gray-900 p-1 rounded-lg">
+        <div className="flex gap-1 mb-4 bg-cream-200 dark:bg-charcoal-900 p-1 rounded-lg">
           <button
             onClick={() => setActiveTab('library')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'library'
-                ? 'bg-emerald-500/20 text-emerald-400'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400'
+                : 'text-charcoal-500 hover:text-charcoal-900 hover:bg-cream-100 dark:text-cream-400 dark:hover:text-cream-50 dark:hover:bg-charcoal-800'
             }`}
           >
             Library
@@ -280,8 +280,8 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
             onClick={() => setActiveTab('drafts')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === 'drafts'
-                ? 'bg-violet-500/20 text-violet-400'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                ? 'bg-sage-100 text-sage-600 dark:bg-sage-900/50 dark:text-sage-400'
+                : 'text-charcoal-500 hover:text-charcoal-900 hover:bg-cream-100 dark:text-cream-400 dark:hover:text-cream-50 dark:hover:bg-charcoal-800'
             }`}
           >
             My Drafts
@@ -319,13 +319,13 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
             {/* Loading State */}
             {loading && (
               <div className="flex items-center justify-center py-12">
-                <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                <div className="w-8 h-8 border-2 border-indigo-500 dark:border-indigo-400 border-t-transparent rounded-full animate-spin" />
               </div>
             )}
 
             {/* Error State */}
             {error && (
-              <div className="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4 text-rose-400 text-center">
+              <div className="bg-terracotta-100 dark:bg-terracotta-900/30 border border-terracotta-300 dark:border-terracotta-500/30 rounded-lg p-4 text-terracotta-600 dark:text-terracotta-300 text-center">
                 {error}
               </div>
             )}
@@ -334,7 +334,7 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
             {!loading && !error && useSupabase && (
               <div className="grid grid-cols-3 gap-4">
                 {filteredPatterns.length === 0 ? (
-                  <div className="col-span-3 text-center py-8 text-gray-400">
+                  <div className="col-span-3 text-center py-8 text-charcoal-500 dark:text-cream-400">
                     No patterns found matching your search.
                   </div>
                 ) : (
@@ -354,7 +354,9 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
             {!loading && !error && !useSupabase && staticIndex && (
               <div className="space-y-2">
                 {staticIndex.patterns.length === 0 ? (
-                  <p className="text-center text-gray-400">No patterns available yet.</p>
+                  <p className="text-center text-charcoal-500 dark:text-cream-400">
+                    No patterns available yet.
+                  </p>
                 ) : (
                   staticIndex.patterns
                     .filter(
@@ -368,11 +370,17 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
                         key={pattern.id}
                         onClick={() => handleLoadStaticPattern(pattern.id)}
                         disabled={loadingPatternId === pattern.id}
-                        className="w-full text-left border border-gray-700 rounded p-4 hover:bg-gray-700 cursor-pointer bg-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-50"
+                        className="w-full text-left border border-cream-300 dark:border-charcoal-700 rounded p-4 hover:bg-cream-100 dark:hover:bg-charcoal-700 cursor-pointer bg-cream-50 dark:bg-charcoal-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 disabled:opacity-50"
                       >
-                        <h3 className="font-semibold text-white">{pattern.name}</h3>
-                        <p className="text-sm text-gray-400">by {pattern.author}</p>
-                        <p className="text-xs text-gray-500 mt-1">License: {pattern.license}</p>
+                        <h3 className="font-semibold text-charcoal-900 dark:text-cream-50">
+                          {pattern.name}
+                        </h3>
+                        <p className="text-sm text-charcoal-500 dark:text-cream-400">
+                          by {pattern.author}
+                        </p>
+                        <p className="text-xs text-charcoal-400 dark:text-cream-500 mt-1">
+                          License: {pattern.license}
+                        </p>
                       </button>
                     ))
                 )}
@@ -386,7 +394,7 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
           <div className="space-y-3">
             {sortedDrafts.length === 0 ? (
               <div className="text-center py-12">
-                <div className="text-gray-500 mb-2">
+                <div className="text-charcoal-400 dark:text-cream-500 mb-2">
                   <svg
                     className="w-12 h-12 mx-auto"
                     fill="none"
@@ -401,8 +409,8 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
                     />
                   </svg>
                 </div>
-                <p className="text-gray-400">No drafts saved yet.</p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-charcoal-500 dark:text-cream-400">No drafts saved yet.</p>
+                <p className="text-sm text-charcoal-400 dark:text-cream-500 mt-1">
                   Your work will be saved here when you choose to save a draft.
                 </p>
               </div>
@@ -410,15 +418,17 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
               sortedDrafts.map((draft) => (
                 <div
                   key={draft.id}
-                  className="bg-gray-900 border border-gray-700 rounded-lg p-4 hover:border-violet-500/50 transition-colors"
+                  className="bg-cream-100 dark:bg-charcoal-900 border border-cream-300 dark:border-charcoal-700 rounded-lg p-4 hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-colors"
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-white truncate">{draft.name}</h3>
-                      <p className="text-sm text-gray-400 truncate">
+                      <h3 className="font-medium text-charcoal-900 dark:text-cream-50 truncate">
+                        {draft.name}
+                      </h3>
+                      <p className="text-sm text-charcoal-500 dark:text-cream-400 truncate">
                         by {draft.author || 'Unknown'}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-charcoal-400 dark:text-cream-500 mt-1">
                         Saved{' '}
                         {new Date(draft.savedAt).toLocaleDateString(undefined, {
                           month: 'short',
@@ -429,7 +439,7 @@ export default function PatternLibraryModal({ onClose }: PatternLibraryModalProp
                       </p>
                     </div>
                     <div className="flex gap-2 ml-4">
-                      <Button variant="emerald" size="sm" onClick={() => handleSelectDraft(draft)}>
+                      <Button variant="success" size="sm" onClick={() => handleSelectDraft(draft)}>
                         Load
                       </Button>
                       <Button

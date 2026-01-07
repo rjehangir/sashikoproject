@@ -1,17 +1,80 @@
+import { useAppStore } from '../../store';
 import { Button } from '../ui';
 
-interface GitHubLinkProps {
-  url: string;
+/**
+ * Sashiko Logo Component
+ * Matches the favicon design
+ */
+function SashikoLogo({ className = 'w-8 h-8' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
+      <rect width="32" height="32" rx="6" className="fill-indigo-700 dark:fill-indigo-600" />
+      <g className="stroke-cream-50" strokeWidth="2" strokeLinecap="round" fill="none">
+        <line x1="6" y1="6" x2="26" y2="26" />
+        <line x1="6" y1="26" x2="26" y2="6" />
+        <line x1="16" y1="6" x2="16" y2="26" />
+        <line x1="6" y1="16" x2="26" y2="16" />
+      </g>
+    </svg>
+  );
 }
 
-function GitHubLink({ url }: GitHubLinkProps) {
+/**
+ * Theme Toggle Button
+ */
+function ThemeToggle() {
+  const theme = useAppStore((s) => s.theme);
+  const toggleTheme = useAppStore((s) => s.toggleTheme);
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className="p-2 rounded-lg transition-colors text-charcoal-600 hover:text-charcoal-900 hover:bg-cream-200 dark:text-cream-300 dark:hover:text-cream-50 dark:hover:bg-charcoal-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
+      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+    >
+      {theme === 'dark' ? (
+        // Sun icon for dark mode (click to go light)
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      ) : (
+        // Moon icon for light mode (click to go dark)
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
+        </svg>
+      )}
+    </button>
+  );
+}
+
+interface GitHubStatsProps {
+  url: string;
+  stars: number;
+  forks: number;
+}
+
+/**
+ * GitHub Link with Stars and Forks
+ */
+function GitHubStats({ url, stars, forks }: GitHubStatsProps) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="View project on GitHub"
-      className="text-gray-400 hover:text-white text-sm flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded p-1"
+      className="flex items-center gap-3 px-3 py-1.5 rounded-lg transition-colors text-charcoal-600 hover:text-charcoal-900 hover:bg-cream-200 dark:text-cream-300 dark:hover:text-cream-50 dark:hover:bg-charcoal-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
     >
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -20,19 +83,19 @@ function GitHubLink({ url }: GitHubLinkProps) {
           clipRule="evenodd"
         />
       </svg>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-1" aria-label="Stars">
+      <div className="flex items-center gap-3 text-sm">
+        <span className="flex items-center gap-1" aria-label={`${stars} stars`}>
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
             <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
           </svg>
-          <span className="text-xs">0</span>
-        </div>
-        <div className="flex items-center gap-1" aria-label="Forks">
+          <span>{stars}</span>
+        </span>
+        <span className="flex items-center gap-1" aria-label={`${forks} forks`}>
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
             <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-.878a2.25 2.25 0 111.5 0v.878a2.25 2.25 0 01-2.25 2.25h-1.5v2.128a2.251 2.251 0 11-1.5 0V8.5h-1.5A2.25 2.25 0 013.5 6.25v-.878a2.25 2.25 0 111.5 0zM5 3.25a.75.75 0 10-1.5 0 .75.75 0 001.5 0zm6.75.75a.75.75 0 10.75-.75.75.75 0 00-.75.75zM8 12.25a.75.75 0 10-1.5 0 .75.75 0 001.5 0z" />
           </svg>
-          <span className="text-xs">0</span>
-        </div>
+          <span>{forks}</span>
+        </span>
       </div>
     </a>
   );
@@ -41,6 +104,7 @@ function GitHubLink({ url }: GitHubLinkProps) {
 export interface HeaderProps {
   title: string;
   githubUrl?: string;
+  githubStats?: { stars: number; forks: number };
   onOpenLibrary?: () => void;
   onOpenSubmit?: () => void;
   onOpenAdmin?: () => void;
@@ -51,6 +115,7 @@ export interface HeaderProps {
 export function Header({
   title,
   githubUrl,
+  githubStats,
   onOpenLibrary,
   onOpenSubmit,
   onOpenAdmin,
@@ -58,16 +123,37 @@ export function Header({
   onSaveDraft,
 }: HeaderProps) {
   return (
-    <header className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between">
-      <div className="flex items-center gap-6">
-        <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Papyrus, fantasy' }}>
-          {title}
-        </h1>
+    <header className="bg-cream-100 border-b border-cream-300 dark:bg-charcoal-800 dark:border-charcoal-700 px-4 py-3 flex items-center justify-between">
+      {/* Left section: Logo, Title, Back to Home */}
+      <div className="flex items-center gap-4">
+        {/* Logo and Title */}
+        <div className="flex items-center gap-3">
+          <SashikoLogo className="w-9 h-9" />
+          <div className="flex flex-col">
+            <h1 className="text-lg font-serif font-semibold text-charcoal-900 dark:text-cream-50 leading-tight">
+              {title}
+            </h1>
+            <a
+              href="/"
+              className="text-xs text-charcoal-500 hover:text-indigo-700 dark:text-cream-400 dark:hover:text-indigo-400 transition-colors"
+            >
+              ← Back to Home
+            </a>
+          </div>
+        </div>
+
+        {/* Separator */}
+        <div className="h-8 w-px bg-cream-300 dark:bg-charcoal-600 hidden sm:block" />
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 hidden sm:flex">
           {onNewDesign && (
-            <Button variant="cyan" size="sm" onClick={onNewDesign} aria-label="Start a new design">
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={onNewDesign}
+              aria-label="Start a new design"
+            >
               <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -82,7 +168,7 @@ export function Header({
 
           {onSaveDraft && (
             <Button
-              variant="violet"
+              variant="secondary"
               size="sm"
               onClick={onSaveDraft}
               aria-label="Save current design as draft"
@@ -95,13 +181,13 @@ export function Header({
                   d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                 />
               </svg>
-              Save Draft
+              Save
             </Button>
           )}
 
           {onOpenLibrary && (
             <Button
-              variant="secondary"
+              variant="ghost"
               size="sm"
               onClick={onOpenLibrary}
               aria-label="Open pattern library"
@@ -120,7 +206,7 @@ export function Header({
 
           {onOpenSubmit && (
             <Button
-              variant="emerald"
+              variant="success"
               size="sm"
               onClick={onOpenSubmit}
               aria-label="Submit your pattern"
@@ -137,11 +223,11 @@ export function Header({
             </Button>
           )}
 
-          {/* Hidden admin button - activated with keyboard shortcut or double-click on title */}
+          {/* Hidden admin button */}
           {onOpenAdmin && (
             <button
               onClick={onOpenAdmin}
-              className="opacity-0 hover:opacity-100 focus:opacity-100 text-gray-500 hover:text-gray-400 p-1 rounded transition-opacity"
+              className="opacity-0 hover:opacity-100 focus:opacity-100 text-charcoal-400 hover:text-charcoal-600 dark:text-cream-500 dark:hover:text-cream-400 p-1 rounded transition-opacity focus:outline-none focus:ring-2 focus:ring-indigo-500"
               aria-label="Open admin panel"
               title="Admin Panel"
             >
@@ -164,7 +250,17 @@ export function Header({
         </div>
       </div>
 
-      {githubUrl && <GitHubLink url={githubUrl} />}
+      {/* Right section: GitHub, Theme Toggle */}
+      <div className="flex items-center gap-2">
+        {githubUrl && (
+          <GitHubStats
+            url={githubUrl}
+            stars={githubStats?.stars ?? 0}
+            forks={githubStats?.forks ?? 0}
+          />
+        )}
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

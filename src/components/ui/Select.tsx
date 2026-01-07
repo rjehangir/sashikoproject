@@ -20,7 +20,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex items-center gap-2">
         {label && (
-          <label htmlFor={selectId} className={`text-xs text-gray-400 flex-shrink-0 ${labelWidth}`}>
+          <label
+            htmlFor={selectId}
+            className={`text-xs text-charcoal-500 dark:text-cream-400 flex-shrink-0 ${labelWidth}`}
+          >
             {label}
           </label>
         )}
@@ -30,9 +33,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           aria-describedby={error ? `${selectId}-error` : undefined}
           aria-invalid={error ? 'true' : undefined}
           className={`
-            text-xs bg-gray-700 text-gray-200 border rounded px-2 py-1
-            focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
-            ${error ? 'border-rose-500' : 'border-gray-600'}
+            text-xs bg-cream-100 text-charcoal-900 border rounded px-2 py-1
+            dark:bg-charcoal-700 dark:text-cream-100
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent
+            ${error ? 'border-terracotta-500' : 'border-cream-300 dark:border-charcoal-600'}
             ${className || ''}
           `}
           {...props}
@@ -44,7 +48,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ))}
         </select>
         {error && (
-          <span id={`${selectId}-error`} className="text-xs text-rose-400" role="alert">
+          <span
+            id={`${selectId}-error`}
+            className="text-xs text-terracotta-500 dark:text-terracotta-300"
+            role="alert"
+          >
             {error}
           </span>
         )}

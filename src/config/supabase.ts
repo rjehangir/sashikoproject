@@ -9,9 +9,10 @@ import type { Database } from '../types/database';
 
 /**
  * Supabase configuration from environment variables
+ * Uses PUBLIC_ prefix for Astro compatibility (works in both SSR and client-side)
  */
-const supabaseUrl = import.meta.env['VITE_SUPABASE_URL'] as string | undefined;
-const supabaseAnonKey = import.meta.env['VITE_SUPABASE_ANON_KEY'] as string | undefined;
+const supabaseUrl = import.meta.env['PUBLIC_SUPABASE_URL'] as string | undefined;
+const supabaseAnonKey = import.meta.env['PUBLIC_SUPABASE_ANON_KEY'] as string | undefined;
 
 /**
  * Check if Supabase is configured
@@ -27,7 +28,7 @@ export function isSupabaseConfigured(): boolean {
 function createSupabaseClient() {
   if (!supabaseUrl || !supabaseAnonKey) {
     console.warn(
-      'Supabase not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.'
+      'Supabase not configured. Set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY environment variables.'
     );
     return null;
   }

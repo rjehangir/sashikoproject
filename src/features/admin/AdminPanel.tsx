@@ -157,10 +157,12 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
               />
             </div>
 
-            {authError && <p className="text-sm text-rose-400">{authError}</p>}
+            {authError && (
+              <p className="text-sm text-terracotta-500 dark:text-terracotta-400">{authError}</p>
+            )}
 
             <Button
-              variant="emerald"
+              variant="success"
               size="lg"
               onClick={handleLogin}
               disabled={!password || isLoggingIn}
@@ -180,7 +182,7 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
       <Button variant="danger" size="md" onClick={handleLogout}>
         Logout
       </Button>
-      <Button variant="slate" size="md" onClick={onClose}>
+      <Button variant="secondary" size="md" onClick={onClose}>
         Close
       </Button>
     </div>
@@ -276,7 +278,7 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
                     {activeTab === 'pending' && (
                       <>
                         <Button
-                          variant="emerald"
+                          variant="success"
                           size="sm"
                           onClick={() => handleApprove(pattern.id)}
                           disabled={isLoading}
@@ -295,7 +297,7 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
                     )}
                     {activeTab === 'rejected' && (
                       <Button
-                        variant="emerald"
+                        variant="success"
                         size="sm"
                         onClick={() => handleApprove(pattern.id)}
                         disabled={isLoading}
@@ -303,7 +305,11 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
                         Approve
                       </Button>
                     )}
-                    <Button variant="slate" size="sm" onClick={() => setSelectedPattern(pattern)}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setSelectedPattern(pattern)}
+                    >
                       Details
                     </Button>
                     <Button

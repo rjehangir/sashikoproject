@@ -25,3 +25,6 @@ export type { LibrarySlice, LibraryStateData, LibraryActions } from './librarySl
 
 export { createAdminSlice } from './adminSlice';
 export type { AdminSlice, AdminStateData, AdminActions } from './adminSlice';
+
+export { createUiSlice } from './uiSlice';
+export type { UiSlice, UiStateData, UiActions, Theme } from './uiSlice';

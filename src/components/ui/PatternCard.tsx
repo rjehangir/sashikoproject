@@ -19,11 +19,11 @@ export function PatternCard({ pattern, onSelect, isLoading = false }: PatternCar
     <button
       onClick={() => onSelect(pattern)}
       disabled={isLoading}
-      className="group relative bg-gray-900 border border-gray-700 rounded-lg overflow-hidden transition-all duration-200 hover:border-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="group relative bg-cream-50 dark:bg-charcoal-900 border border-cream-300 dark:border-charcoal-700 rounded-lg overflow-hidden transition-all duration-200 hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-500/10 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-cream-50 dark:focus:ring-offset-charcoal-800 disabled:opacity-50 disabled:cursor-not-allowed"
       aria-label={`Load pattern: ${pattern.name} by ${pattern.author}`}
     >
       {/* Thumbnail Area */}
-      <div className="aspect-square bg-gray-800 relative overflow-hidden">
+      <div className="aspect-square bg-cream-200 dark:bg-charcoal-800 relative overflow-hidden">
         {thumbnailUrl ? (
           <div
             className="absolute inset-0 flex items-center justify-center p-4"
@@ -37,7 +37,7 @@ export function PatternCard({ pattern, onSelect, isLoading = false }: PatternCar
             />
           </div>
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-600">
+          <div className="absolute inset-0 flex items-center justify-center text-charcoal-400 dark:text-cream-600">
             <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
@@ -50,8 +50,8 @@ export function PatternCard({ pattern, onSelect, isLoading = false }: PatternCar
         )}
 
         {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end justify-center pb-4">
-          <span className="text-emerald-400 font-medium text-sm flex items-center gap-1">
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 via-charcoal-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end justify-center pb-4">
+          <span className="text-indigo-300 font-medium text-sm flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
@@ -67,13 +67,15 @@ export function PatternCard({ pattern, onSelect, isLoading = false }: PatternCar
 
       {/* Metadata */}
       <div className="p-3 text-left">
-        <h3 className="font-medium text-white text-sm truncate group-hover:text-emerald-400 transition-colors">
+        <h3 className="font-medium text-charcoal-900 dark:text-cream-50 text-sm truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
           {pattern.name}
         </h3>
-        <p className="text-xs text-gray-400 truncate mt-0.5">by {pattern.author}</p>
+        <p className="text-xs text-charcoal-500 dark:text-cream-400 truncate mt-0.5">
+          by {pattern.author}
+        </p>
 
         {/* Stats Row */}
-        <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+        <div className="flex items-center gap-3 mt-2 text-xs text-charcoal-400 dark:text-cream-500">
           <span className="flex items-center gap-1" title="Downloads">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -107,8 +109,8 @@ export function PatternCard({ pattern, onSelect, isLoading = false }: PatternCar
 
       {/* Loading Overlay */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gray-900/80 flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+        <div className="absolute inset-0 bg-cream-50/80 dark:bg-charcoal-900/80 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-indigo-500 dark:border-indigo-400 border-t-transparent rounded-full animate-spin" />
         </div>
       )}
     </button>

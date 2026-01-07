@@ -37,22 +37,22 @@ describe('Button', () => {
   describe('variants', () => {
     it('should apply primary variant by default', () => {
       render(<Button>Primary</Button>);
-      expect(screen.getByRole('button')).toHaveClass('bg-blue-300');
+      expect(screen.getByRole('button')).toHaveClass('bg-indigo-700');
     });
 
     it('should apply secondary variant', () => {
       render(<Button variant="secondary">Secondary</Button>);
-      expect(screen.getByRole('button')).toHaveClass('bg-gray-700');
+      expect(screen.getByRole('button')).toHaveClass('bg-cream-200');
     });
 
     it('should apply danger variant', () => {
       render(<Button variant="danger">Danger</Button>);
-      expect(screen.getByRole('button')).toHaveClass('bg-rose-300');
+      expect(screen.getByRole('button')).toHaveClass('bg-terracotta-400');
     });
 
     it('should apply ghost variant', () => {
       render(<Button variant="ghost">Ghost</Button>);
-      expect(screen.getByRole('button')).toHaveClass('hover:bg-gray-700');
+      expect(screen.getByRole('button')).toHaveClass('hover:bg-cream-200');
     });
   });
 
@@ -81,7 +81,7 @@ describe('Button', () => {
       render(<Button className="custom-class">Custom</Button>);
       const button = screen.getByRole('button');
       expect(button).toHaveClass('custom-class');
-      expect(button).toHaveClass('bg-blue-300'); // Still has default variant
+      expect(button).toHaveClass('bg-indigo-700'); // Still has default variant
     });
   });
 

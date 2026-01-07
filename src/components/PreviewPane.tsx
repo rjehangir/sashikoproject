@@ -105,12 +105,14 @@ export default function PreviewPane() {
   const tileScale = tileSizePx / viewBoxWidth;
 
   return (
-    <div className="flex flex-col h-full bg-gray-900 text-gray-100">
-      <div className="px-4 py-2 border-b border-gray-700 bg-gray-800">
+    <div className="flex flex-col h-full bg-cream-50 text-charcoal-900 dark:bg-charcoal-900 dark:text-cream-100">
+      <div className="px-4 py-2 border-b border-cream-200 bg-cream-100 dark:border-charcoal-700 dark:bg-charcoal-800">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-white">Live Preview</h2>
-            <p className="text-sm text-gray-400">
+            <h2 className="text-lg font-semibold text-charcoal-900 dark:text-cream-50">
+              Live Preview
+            </h2>
+            <p className="text-sm text-charcoal-500 dark:text-cream-400">
               {patternWidthMm.toFixed(1)} × {patternHeightMm.toFixed(1)} {unit} ({rows} × {cols}{' '}
               tiles, {actualTileSizeMm.toFixed(1)} {unit} each)
             </p>
@@ -123,7 +125,7 @@ export default function PreviewPane() {
               onChange={(e) => setPreviewScaleMode(e.target.value as 'fit' | 'real-size')}
             />
             <Button
-              variant="danger"
+              variant="primary"
               size="md"
               onClick={() => exportPdf()}
               disabled={isExporting}
@@ -135,7 +137,7 @@ export default function PreviewPane() {
         </div>
       </div>
       <div
-        className="flex-1 overflow-auto p-4 flex items-center justify-center bg-gray-900"
+        className="flex-1 overflow-auto p-4 flex items-center justify-center bg-cream-200 dark:bg-charcoal-900"
         role="img"
         aria-label={`Preview of ${rows} by ${cols} tile pattern at ${patternWidthMm.toFixed(1)} by ${patternHeightMm.toFixed(1)} ${unit}`}
       >

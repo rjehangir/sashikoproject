@@ -6,17 +6,20 @@ import PreviewPane from './components/PreviewPane';
 import { SubmitPatternModal } from './components/SubmitPatternModal';
 import { EditorErrorFallback, PreviewErrorFallback } from './components/fallbacks';
 import { Header, SplitPane } from './components/layout';
+import { env } from './config/env';
 import { AdminPanel } from './features/admin';
 import { EditorPane } from './features/editor';
 import { ToolsPanel } from './features/tools';
+import { fetchGitHubStats } from './services/github';
 import { useAppStore } from './store';
 
-const GITHUB_URL = 'https://github.com/YOUR_USERNAME/sashiko';
+const GITHUB_URL = `https://github.com/${env.githubRepo}`;
 
 function App() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+  const [githubStats, setGithubStats] = useState<{ stars: number; forks: number } | null>(null);
 
   // Store state and actions
   const resetPattern = useAppStore((s) => s.resetPattern);
@@ -27,6 +30,21 @@ function App() {
   const patternLicense = useAppStore((s) => s.patternLicense);
   const patternNotes = useAppStore((s) => s.patternNotes);
   const viewBox = useAppStore((s) => s.viewBox);
+  const initTheme = useAppStore((s) => s.initTheme);
+
+  // Initialize theme on mount
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
+
+  // Fetch GitHub stats on mount
+  useEffect(() => {
+    fetchGitHubStats(env.githubRepo).then((stats) => {
+      if (stats) {
+        setGithubStats({ stars: stats.stars, forks: stats.forks });
+      }
+    });
+  }, []);
 
   // Keyboard shortcut for admin panel (Ctrl+Shift+A)
   useEffect(() => {
@@ -93,10 +111,11 @@ function App() {
   );
 
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-gray-100">
+    <div className="flex flex-col h-screen bg-cream-50 text-charcoal-900 dark:bg-charcoal-900 dark:text-cream-50">
       <Header
-        title="The Sashiko Project"
+        title="Sashiko Project"
         githubUrl={GITHUB_URL}
+        githubStats={githubStats ?? undefined}
         onNewDesign={handleNewDesign}
         onSaveDraft={handleSaveDraft}
         onOpenLibrary={handleOpenLibrary}

@@ -49,17 +49,17 @@ export const DEFAULT_SNAP_GRID_MM = 1;
 // DEFAULT VALUES - COLORS
 // ============================================================================
 
-/** Default background color (dark) */
-export const DEFAULT_BACKGROUND_COLOR = '#1a1a1a';
+/** Default background color (cream/cloth-like - traditional sashiko fabric) */
+export const DEFAULT_BACKGROUND_COLOR = '#f5f5dc';
 
-/** Default thread color (white) */
-export const DEFAULT_THREAD_COLOR = '#ffffff';
+/** Default thread color (indigo - traditional sashiko thread) */
+export const DEFAULT_THREAD_COLOR = '#334e68';
 
 /** Default grid color */
-export const DEFAULT_GRID_COLOR = '#333333';
+export const DEFAULT_GRID_COLOR = '#d9d3c7';
 
 /** Default selection color */
-export const DEFAULT_SELECTION_COLOR = '#3b82f6';
+export const DEFAULT_SELECTION_COLOR = '#334e68';
 
 // ============================================================================
 // DEFAULT VALUES - PREVIEW

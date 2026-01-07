@@ -15,6 +15,7 @@ import {
   createStitchSlice,
   createDraftsSlice,
   createLibrarySlice,
+  createUiSlice,
   type PatternSlice,
   type EditorSlice,
   type DisplaySlice,
@@ -22,6 +23,7 @@ import {
   type StitchSlice,
   type DraftsSlice,
   type LibrarySlice,
+  type UiSlice,
 } from './slices';
 
 // ============================================================================
@@ -37,7 +39,8 @@ export type AppStore = PatternSlice &
   SizeSlice &
   StitchSlice &
   DraftsSlice &
-  LibrarySlice;
+  LibrarySlice &
+  UiSlice;
 
 // ============================================================================
 // STORE CREATION
@@ -58,6 +61,7 @@ export const useAppStore = create<AppStore>()(
         ...createStitchSlice(...a),
         ...createDraftsSlice(...a),
         ...createLibrarySlice(...a),
+        ...createUiSlice(...a),
       }),
       persistConfig
     ),
@@ -207,6 +211,17 @@ export const useLibraryState = () =>
     resetLibrary: state.resetLibrary,
   }));
 
+/**
+ * UI-related state selector
+ */
+export const useUiState = () =>
+  useAppStore((state) => ({
+    theme: state.theme,
+    setTheme: state.setTheme,
+    toggleTheme: state.toggleTheme,
+    initTheme: state.initTheme,
+  }));
+
 // ============================================================================
 // RE-EXPORTS
 // ============================================================================
@@ -230,6 +245,8 @@ export type {
 } from './slices/draftsSlice';
 
 export type { LibrarySlice, LibraryStateData, LibraryActions } from './slices/librarySlice';
+
+export type { UiSlice, UiStateData, UiActions, Theme } from './slices/uiSlice';
 
 // Export store types
 export type { PersistedFields } from './middleware/persist';

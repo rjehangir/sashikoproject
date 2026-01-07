@@ -1,26 +1,32 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PatternCard from '../../components/marketing/PatternCard.astro';
+import { fetchApprovedPatterns, fetchPatternSvg } from '../../lib/supabase-server';
 
-import fs from 'node:fs';
-import path from 'node:path';
+// Fetch approved patterns from Supabase at build time
+const supabasePatterns = await fetchApprovedPatterns();
 
-const patternsDir = path.join(process.cwd(), 'public', 'patterns');
-const indexPath = path.join(patternsDir, 'index.json');
-const patternIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
-const patterns = patternIndex.patterns || [];
-
+// Load SVG content for each pattern (for preview)
 const patternDetails = await Promise.all(
-  patterns.map(async (p: { id: string }) => {
-    try {
-      const filePath = path.join(patternsDir, `${p.id}.json`);
-      const content = fs.readFileSync(filePath, 'utf-8');
-      return JSON.parse(content);
-    } catch {
-      return null;
-    }
+  supabasePatterns.map(async (pattern) => {
+    const svgContent = await fetchPatternSvg(pattern.svg_url);
+    return {
+      id: pattern.slug,
+      name: pattern.name,
+      author: pattern.author,
+      license: pattern.license,
+      notes: pattern.notes,
+      download_count: pattern.download_count,
+      view_count: pattern.view_count,
+      tile: svgContent ? {
+        svg: svgContent,
+        viewBox: pattern.tile_viewbox,
+      } : undefined,
+    };
   })
-).then(results => results.filter(Boolean));
+);
+
+const patterns = patternDetails;
 ---
 
 <BaseLayout 

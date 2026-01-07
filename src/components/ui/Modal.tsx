@@ -73,7 +73,7 @@ export function Modal({ isOpen, onClose, title, children, footer }: ModalProps) 
 
   const modalContent = (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-charcoal-900/50 dark:bg-charcoal-900/70 flex items-center justify-center z-50"
       onClick={handleBackdropClick}
       onKeyDown={handleBackdropKeyDown}
       role="button"
@@ -87,23 +87,28 @@ export function Modal({ isOpen, onClose, title, children, footer }: ModalProps) 
         aria-labelledby="modal-title"
         tabIndex={-1}
         onKeyDown={handleKeyDown}
-        className="bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col border border-gray-700 outline-none"
+        className="bg-cream-50 dark:bg-charcoal-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col border border-cream-200 dark:border-charcoal-700 outline-none"
       >
-        <div className="px-6 py-4 border-b border-gray-700 flex justify-between items-center">
-          <h2 id="modal-title" className="text-xl font-semibold text-white">
+        <div className="px-6 py-4 border-b border-cream-200 dark:border-charcoal-700 flex justify-between items-center">
+          <h2
+            id="modal-title"
+            className="text-xl font-serif font-semibold text-charcoal-900 dark:text-cream-50"
+          >
             {title}
           </h2>
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="text-gray-400 hover:text-white text-2xl leading-none p-1 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
+            className="text-charcoal-400 hover:text-charcoal-600 dark:text-cream-400 dark:hover:text-cream-100 text-2xl leading-none p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 rounded"
           >
             ×
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-6">{children}</div>
         {footer && (
-          <div className="px-6 py-4 border-t border-gray-700 flex justify-between">{footer}</div>
+          <div className="px-6 py-4 border-t border-cream-200 dark:border-charcoal-700 flex justify-between">
+            {footer}
+          </div>
         )}
       </div>
     </div>

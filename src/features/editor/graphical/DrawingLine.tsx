@@ -16,7 +16,7 @@ export function DrawingLine({ line, strokeWidth }: DrawingLineProps) {
       y1={line.y1}
       x2={line.x2}
       y2={line.y2}
-      stroke="#60a5fa"
+      stroke="#6366f1"
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       opacity={0.8}

@@ -14,6 +14,10 @@ export function GridOverlay({ width, height, padding = 0 }: GridOverlayProps) {
   const verticalLines = Math.floor(endX - startX) + 1;
   const horizontalLines = Math.floor(endY - startY) + 1;
 
+  // Colors that work on the cream background
+  const innerGridColor = '#c5bba8'; // cream-400 - subtle grid on main area
+  const outerGridColor = '#a69f8d'; // darker for extended area
+
   return (
     <>
       {/* Extended grid - vertical lines */}
@@ -27,7 +31,7 @@ export function GridOverlay({ width, height, padding = 0 }: GridOverlayProps) {
             y1={startY}
             x2={x}
             y2={endY}
-            stroke={isInsideBounds ? '#374151' : '#1f2937'}
+            stroke={isInsideBounds ? innerGridColor : outerGridColor}
             strokeWidth="0.05"
           />
         );
@@ -43,7 +47,7 @@ export function GridOverlay({ width, height, padding = 0 }: GridOverlayProps) {
             y1={y}
             x2={endX}
             y2={y}
-            stroke={isInsideBounds ? '#374151' : '#1f2937'}
+            stroke={isInsideBounds ? innerGridColor : outerGridColor}
             strokeWidth="0.05"
           />
         );
@@ -55,7 +59,7 @@ export function GridOverlay({ width, height, padding = 0 }: GridOverlayProps) {
         width={width}
         height={height}
         fill="none"
-        stroke="#6366f1"
+        stroke="#334e68"
         strokeWidth="0.1"
         strokeDasharray="0.5 0.3"
         aria-label="Tile boundary"

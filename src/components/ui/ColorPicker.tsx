@@ -13,7 +13,10 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
     return (
       <div className="flex items-center gap-2">
         {label && (
-          <label htmlFor={colorId} className={`text-xs text-gray-400 flex-shrink-0 ${labelWidth}`}>
+          <label
+            htmlFor={colorId}
+            className={`text-xs text-charcoal-500 dark:text-cream-400 flex-shrink-0 ${labelWidth}`}
+          >
             {label}
           </label>
         )}
@@ -23,8 +26,8 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
           type="color"
           aria-label={label || 'Color picker'}
           className={`
-            w-12 h-8 border border-gray-600 rounded cursor-pointer
-            focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-gray-900
+            w-12 h-8 border border-cream-300 dark:border-charcoal-600 rounded cursor-pointer
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:ring-offset-cream-50 dark:focus:ring-offset-charcoal-900
             ${className || ''}
           `}
           {...props}

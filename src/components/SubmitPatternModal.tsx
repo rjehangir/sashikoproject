@@ -126,9 +126,9 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
     return (
       <Modal isOpen title="Pattern Submitted!" onClose={onClose}>
         <div className="text-center py-8">
-          <div className="w-16 h-16 mx-auto mb-4 bg-emerald-500/20 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-sage-100 dark:bg-sage-900/30 rounded-full flex items-center justify-center">
             <svg
-              className="w-8 h-8 text-emerald-400"
+              className="w-8 h-8 text-sage-600 dark:text-sage-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -141,15 +141,17 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">Thank you for your submission!</h3>
-          <p className="text-gray-400 mb-4">
+          <h3 className="text-xl font-semibold text-charcoal-900 dark:text-cream-50 mb-2">
+            Thank you for your submission!
+          </h3>
+          <p className="text-charcoal-500 dark:text-cream-400 mb-4">
             Your pattern &quot;{name}&quot; has been submitted for review.
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-charcoal-400 dark:text-cream-500">
             Our team will review your submission and add it to the library if approved.
             {email && " We'll notify you at the email you provided."}
           </p>
-          <Button variant="emerald" size="lg" onClick={onClose} className="mt-6">
+          <Button variant="success" size="lg" onClick={onClose} className="mt-6">
             Close
           </Button>
         </div>
@@ -159,11 +161,11 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
 
   const footer = (
     <div className="flex justify-between w-full">
-      <Button variant="slate" size="lg" onClick={onClose}>
+      <Button variant="secondary" size="lg" onClick={onClose}>
         Cancel
       </Button>
       <Button
-        variant="emerald"
+        variant="success"
         size="lg"
         onClick={handleSubmit}
         disabled={!isValid || !hasContent || status === 'submitting'}
@@ -184,8 +186,8 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
     <Modal isOpen title="Submit Your Pattern" onClose={onClose} footer={footer}>
       <div className="space-y-6">
         {/* Info banner */}
-        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4">
-          <p className="text-emerald-400 text-sm">
+        <div className="bg-sage-100 dark:bg-sage-900/30 border border-sage-300 dark:border-sage-500/30 rounded-lg p-4">
+          <p className="text-sage-700 dark:text-sage-400 text-sm">
             Share your sashiko design with the community! Your pattern will be reviewed by our team
             before being added to the public library.
           </p>
@@ -193,8 +195,8 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
 
         {/* No content warning */}
         {!hasContent && (
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-            <p className="text-amber-400 text-sm">
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-500/30 rounded-lg p-4">
+            <p className="text-amber-700 dark:text-amber-400 text-sm">
               Your pattern appears to be empty. Please create a design before submitting.
             </p>
           </div>
@@ -202,16 +204,19 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
 
         {/* Error message */}
         {status === 'error' && errorMessage && (
-          <div className="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4">
-            <p className="text-rose-400 text-sm">{errorMessage}</p>
+          <div className="bg-terracotta-100 dark:bg-terracotta-900/30 border border-terracotta-300 dark:border-terracotta-500/30 rounded-lg p-4">
+            <p className="text-terracotta-700 dark:text-terracotta-400 text-sm">{errorMessage}</p>
           </div>
         )}
 
         {/* Form fields */}
         <div className="space-y-4">
           <div>
-            <label htmlFor="pattern-name" className="block text-sm font-medium text-gray-300 mb-1">
-              Pattern Name <span className="text-rose-400">*</span>
+            <label
+              htmlFor="pattern-name"
+              className="block text-sm font-medium text-charcoal-700 dark:text-cream-200 mb-1"
+            >
+              Pattern Name <span className="text-terracotta-500">*</span>
             </label>
             <Input
               id="pattern-name"
@@ -225,9 +230,9 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
           <div>
             <label
               htmlFor="pattern-author"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-charcoal-700 dark:text-cream-200 mb-1"
             >
-              Your Name <span className="text-rose-400">*</span>
+              Your Name <span className="text-terracotta-500">*</span>
             </label>
             <Input
               id="pattern-author"
@@ -241,7 +246,7 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
           <div>
             <label
               htmlFor="pattern-license"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-charcoal-700 dark:text-cream-200 mb-1"
             >
               License
             </label>
@@ -251,13 +256,13 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
               onChange={(e) => setLicense(e.target.value)}
               options={LICENSE_OPTIONS}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-charcoal-400 dark:text-cream-500 mt-1">
               Choose how others can use your pattern.{' '}
               <a
                 href="https://creativecommons.org/licenses/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-400 hover:underline"
+                className="text-indigo-600 dark:text-indigo-400 hover:underline"
               >
                 Learn more
               </a>
@@ -265,7 +270,10 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
           </div>
 
           <div>
-            <label htmlFor="pattern-notes" className="block text-sm font-medium text-gray-300 mb-1">
+            <label
+              htmlFor="pattern-notes"
+              className="block text-sm font-medium text-charcoal-700 dark:text-cream-200 mb-1"
+            >
               Notes (optional)
             </label>
             <textarea
@@ -274,12 +282,15 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Any special instructions or history about this pattern..."
               rows={3}
-              className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent resize-none"
+              className="w-full px-3 py-2 bg-cream-100 dark:bg-charcoal-900 border border-cream-300 dark:border-charcoal-700 rounded-md text-charcoal-900 dark:text-cream-100 placeholder-charcoal-400 dark:placeholder-cream-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent resize-none"
             />
           </div>
 
           <div>
-            <label htmlFor="pattern-email" className="block text-sm font-medium text-gray-300 mb-1">
+            <label
+              htmlFor="pattern-email"
+              className="block text-sm font-medium text-charcoal-700 dark:text-cream-200 mb-1"
+            >
               Email (optional)
             </label>
             <Input
@@ -289,16 +300,18 @@ export function SubmitPatternModal({ onClose }: SubmitPatternModalProps) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-charcoal-400 dark:text-cream-500 mt-1">
               We&apos;ll notify you when your pattern is approved (never shared publicly).
             </p>
           </div>
         </div>
 
         {/* Preview info */}
-        <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-          <h4 className="text-sm font-medium text-gray-300 mb-2">What happens next?</h4>
-          <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+        <div className="bg-cream-100 dark:bg-charcoal-900 rounded-lg p-4 border border-cream-300 dark:border-charcoal-700">
+          <h4 className="text-sm font-medium text-charcoal-700 dark:text-cream-200 mb-2">
+            What happens next?
+          </h4>
+          <ol className="text-sm text-charcoal-500 dark:text-cream-400 space-y-1 list-decimal list-inside">
             <li>Your pattern is submitted for review</li>
             <li>Our team checks the design quality and content</li>
             <li>If approved, it appears in the public library</li>
