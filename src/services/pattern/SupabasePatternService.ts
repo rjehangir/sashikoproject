@@ -244,31 +244,36 @@ export class SupabasePatternService {
         return err(new Error(`Failed to upload SVG: ${uploadError.message}`));
       }
 
-      // Insert pattern record
-      const { data, error: insertError } = await supabase
-        .from('patterns')
-        .insert({
-          slug: pattern.id,
-          name: pattern.name,
-          author: pattern.author,
-          license: pattern.license,
-          notes: pattern.notes ?? null,
-          svg_url: svgPath,
-          tile_viewbox: pattern.tile.viewBox,
-          stitch_defaults: pattern.defaults,
-          status: 'pending' as const,
-          submitter_email: submitterEmail ?? null,
-        })
-        .select('id')
-        .single();
+      // Insert pattern record (don't use .select() as it requires SELECT permission on the new row)
+      const { error: insertError } = await supabase.from('patterns').insert({
+        slug: pattern.id,
+        name: pattern.name,
+        author: pattern.author,
+        license: pattern.license,
+        notes: pattern.notes ?? null,
+        svg_url: svgPath,
+        tile_viewbox: pattern.tile.viewBox,
+        stitch_defaults: pattern.defaults,
+        status: 'pending' as const,
+        submitter_email: submitterEmail ?? null,
+      });
 
       if (insertError) {
         // Clean up uploaded file on failure
         await supabase.storage.from(PATTERNS_BUCKET).remove([svgPath]);
+
+        // Check for unique constraint violation (duplicate slug)
+        if (insertError.code === '23505' || insertError.message.includes('duplicate')) {
+          return err(
+            new Error(`A pattern with this name already exists. Please choose a different name.`)
+          );
+        }
+
         return err(new Error(`Failed to submit pattern: ${insertError.message}`));
       }
 
-      return ok(data.id);
+      // Return the slug as the identifier (we can't get the UUID without SELECT permission)
+      return ok(pattern.id);
     } catch (error) {
       return err(error instanceof Error ? error : new Error('Failed to submit pattern'));
     }
