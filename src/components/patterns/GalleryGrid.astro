@@ -1,0 +1,124 @@
+---
+interface Props {
+  patternId: string;
+}
+
+const { patternId: _patternId } = Astro.props;
+
+// Placeholder - this will be populated from Supabase in the future
+// patternId will be used when we fetch from the database
+const galleryImages: Array<{
+  id: string;
+  url: string;
+  thumbnailUrl: string;
+  submittedBy: string;
+  submittedAt: string;
+}> = [];
+---
+
+{galleryImages.length > 0 ? (
+  <div class="gallery-grid">
+    {galleryImages.map((image) => (
+      <button
+        class="gallery-item aspect-square rounded-lg overflow-hidden bg-cream-200 group relative cursor-pointer"
+        data-image-url={image.url}
+        data-submitted-by={image.submittedBy}
+        aria-label={`View photo by ${image.submittedBy}`}
+      >
+        <img 
+          src={image.thumbnailUrl} 
+          alt={`Sashiko pattern used by ${image.submittedBy}`}
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/30 transition-colors flex items-center justify-center">
+          <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+          </svg>
+        </div>
+      </button>
+    ))}
+  </div>
+) : (
+  <div class="text-center py-16 bg-white rounded-2xl">
+    <div class="w-20 h-20 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg class="w-10 h-10 text-charcoal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+    </div>
+    <h3 class="text-xl font-serif font-semibold text-charcoal-700 mb-2">
+      No photos yet
+    </h3>
+    <p class="text-charcoal-500 max-w-md mx-auto">
+      Be the first to share your work using this pattern! 
+      We'd love to see how you bring this design to life.
+    </p>
+  </div>
+)}
+
+<!-- Lightbox Modal -->
+<div 
+  id="gallery-lightbox" 
+  class="fixed inset-0 z-50 hidden bg-charcoal-900/95 flex items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+>
+  <button 
+    class="absolute top-4 right-4 p-2 text-cream-200 hover:text-white transition-colors"
+    id="lightbox-close"
+    aria-label="Close"
+  >
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+  
+  <div class="max-w-4xl max-h-[90vh] w-full">
+    <img 
+      id="lightbox-image" 
+      src="" 
+      alt="" 
+      class="w-full h-full object-contain rounded-lg"
+    />
+    <p id="lightbox-caption" class="text-cream-200 text-center mt-4"></p>
+  </div>
+</div>
+
+<script>
+  const lightbox = document.getElementById('gallery-lightbox');
+  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxClose = document.getElementById('lightbox-close');
+  
+  document.querySelectorAll('.gallery-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      const url = item.getAttribute('data-image-url');
+      const submittedBy = item.getAttribute('data-submitted-by');
+      
+      if (lightbox && lightboxImage && lightboxCaption && url) {
+        lightboxImage.src = url;
+        lightboxImage.alt = `Sashiko pattern by ${submittedBy}`;
+        lightboxCaption.textContent = `Submitted by ${submittedBy}`;
+        lightbox.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+  
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+  
+  lightboxClose?.addEventListener('click', closeLightbox);
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>

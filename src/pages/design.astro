@@ -1,0 +1,80 @@
+---
+import '../styles/index.css';
+
+// This page renders the React design tool as a full-page app
+const title = "Sashiko Design Tool | The Sashiko Project";
+const description = "Create custom sashiko embroidery patterns with our free online design tool. Customize stitch settings and export print-ready PDFs.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-design-tool.png" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <style>
+      /* Prevent FOUC for the design tool */
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #f5f3ef;
+      }
+      
+      #root {
+        height: 100vh;
+        width: 100vw;
+      }
+      
+      /* Loading state */
+      .design-tool-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: system-ui, -apple-system, sans-serif;
+        color: #334e68;
+      }
+      
+      .design-tool-loading svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="design-tool-loading">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4l16 16M4 20l16-16M12 4v16M4 12h16" stroke-linecap="round"/>
+        </svg>
+        <p>Loading design tool...</p>
+      </div>
+    </div>
+    
+    <!-- Load the React app -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

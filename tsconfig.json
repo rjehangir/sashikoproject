@@ -1,4 +1,5 @@
 {
+  "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -11,16 +12,19 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
 
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src", "astro.config.mjs", "scripts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

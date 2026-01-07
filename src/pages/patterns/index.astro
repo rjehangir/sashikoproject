@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PatternCard from '../../components/marketing/PatternCard.astro';
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+const patternsDir = path.join(process.cwd(), 'public', 'patterns');
+const indexPath = path.join(patternsDir, 'index.json');
+const patternIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+const patterns = patternIndex.patterns || [];
+
+const patternDetails = await Promise.all(
+  patterns.map(async (p: { id: string }) => {
+    try {
+      const filePath = path.join(patternsDir, `${p.id}.json`);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(content);
+    } catch {
+      return null;
+    }
+  })
+).then(results => results.filter(Boolean));
+---
+
+<BaseLayout 
+  title="Sashiko Pattern Library"
+  description="Explore our collection of free sashiko embroidery patterns. Traditional Japanese stitching designs ready to customize and stitch."
+>
+  <section class="bg-gradient-warm py-16 md:py-24">
+    <div class="container-marketing text-center">
+      <span class="badge-primary mb-4">Pattern Library</span>
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-charcoal-900 mb-6">
+        Sashiko Patterns
+      </h1>
+      <p class="text-lg text-charcoal-600 max-w-2xl mx-auto">
+        Browse our collection of {patterns.length} free sashiko patterns. Each design is ready 
+        to customize in our design tool and export for your stitching projects.
+      </p>
+    </div>
+  </section>
+  
+  <section class="section bg-cream-50">
+    <div class="container-marketing">
+      {patternDetails.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          {patternDetails.map((pattern) => (
+            <PatternCard pattern={pattern} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <div class="w-16 h-16 bg-cream-200 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-charcoal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold text-charcoal-700 mb-2">No patterns found</h3>
+          <p class="text-charcoal-500">Check back soon for new patterns!</p>
+        </div>
+      )}
+    </div>
+  </section>
+  
+  <section class="py-16 bg-white">
+    <div class="container-marketing text-center">
+      <h2 class="text-2xl md:text-3xl font-serif font-bold text-charcoal-900 mb-4">
+        Can't find what you're looking for?
+      </h2>
+      <p class="text-charcoal-600 mb-8 max-w-xl mx-auto">
+        Create your own custom sashiko pattern with our free design tool.
+      </p>
+      <a href="/design" class="btn-primary btn-lg">
+        Open Design Tool
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,242 @@
+---
+import '../styles/index.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = 'Create beautiful sashiko embroidery patterns with our free online design tool. Explore traditional Japanese stitching patterns and create your own.',
+  image = '/og-default.png',
+  type = 'website',
+  canonicalUrl,
+  noindex = false,
+} = Astro.props;
+
+const siteTitle = 'The Sashiko Project';
+const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+const siteUrl = Astro.site?.toString() || 'https://sashikoproject.org';
+const currentUrl = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
+const imageUrl = image.startsWith('http') ? image : new URL(image, siteUrl).toString();
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={currentUrl} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:site_name" content={siteTitle} />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={currentUrl} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    
+    <!-- Additional SEO -->
+    <meta name="author" content="The Sashiko Project" />
+    <meta name="keywords" content="sashiko, embroidery, japanese stitching, pattern design, needlework, traditional craft" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#334e68" />
+    
+    <!-- Slot for additional head content -->
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-cream-50/95 backdrop-blur-sm border-b border-cream-200">
+      <nav class="container-marketing">
+        <div class="flex items-center justify-between h-16 md:h-20">
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-lg bg-indigo-700 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" class="w-6 h-6 text-cream-50" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4l16 16M4 20l16-16M12 4v16M4 12h16" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="font-serif text-xl font-semibold text-charcoal-900 group-hover:text-indigo-700 transition-colors">
+              Sashiko Project
+            </span>
+          </a>
+          
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center gap-8">
+            <a href="/" class="text-charcoal-700 hover:text-indigo-700 font-medium transition-colors">
+              Home
+            </a>
+            <a href="/patterns" class="text-charcoal-700 hover:text-indigo-700 font-medium transition-colors">
+              Patterns
+            </a>
+            <a href="/techniques" class="text-charcoal-700 hover:text-indigo-700 font-medium transition-colors">
+              Techniques
+            </a>
+            <a href="/design" class="btn-primary">
+              Design Tool
+            </a>
+          </div>
+          
+          <!-- Mobile Menu Button -->
+          <button 
+            id="mobile-menu-button"
+            class="md:hidden p-2 text-charcoal-700 hover:text-indigo-700 transition-colors"
+            aria-label="Toggle menu"
+            aria-expanded="false"
+          >
+            <svg class="w-6 h-6 menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg class="w-6 h-6 close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden pb-4">
+          <div class="flex flex-col gap-2">
+            <a href="/" class="px-4 py-3 text-charcoal-700 hover:bg-cream-100 rounded-lg font-medium transition-colors">
+              Home
+            </a>
+            <a href="/patterns" class="px-4 py-3 text-charcoal-700 hover:bg-cream-100 rounded-lg font-medium transition-colors">
+              Patterns
+            </a>
+            <a href="/techniques" class="px-4 py-3 text-charcoal-700 hover:bg-cream-100 rounded-lg font-medium transition-colors">
+              Techniques
+            </a>
+            <a href="/design" class="btn-primary mt-2 text-center">
+              Design Tool
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="flex-1">
+      <slot />
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-charcoal-900 text-cream-100">
+      <div class="container-marketing py-12 md:py-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+          <!-- Brand -->
+          <div class="md:col-span-2">
+            <a href="/" class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" class="w-6 h-6 text-cream-50" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4l16 16M4 20l16-16M12 4v16M4 12h16" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span class="font-serif text-xl font-semibold text-cream-50">
+                Sashiko Project
+              </span>
+            </a>
+            <p class="text-cream-300 max-w-md leading-relaxed">
+              Free tools and resources for the sashiko embroidery community. 
+              Create, share, and explore traditional Japanese stitching patterns.
+            </p>
+          </div>
+          
+          <!-- Quick Links -->
+          <div>
+            <h4 class="font-serif font-semibold text-cream-50 mb-4">Explore</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="/patterns" class="text-cream-300 hover:text-cream-50 transition-colors">
+                  Pattern Library
+                </a>
+              </li>
+              <li>
+                <a href="/design" class="text-cream-300 hover:text-cream-50 transition-colors">
+                  Design Tool
+                </a>
+              </li>
+              <li>
+                <a href="/techniques" class="text-cream-300 hover:text-cream-50 transition-colors">
+                  Techniques Guide
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Resources -->
+          <div>
+            <h4 class="font-serif font-semibold text-cream-50 mb-4">Resources</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="https://github.com/sashiko-project/sashiko" target="_blank" rel="noopener noreferrer" class="text-cream-300 hover:text-cream-50 transition-colors">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href="/about" class="text-cream-300 hover:text-cream-50 transition-colors">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="/contact" class="text-cream-300 hover:text-cream-50 transition-colors">
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Bottom Bar -->
+        <div class="mt-12 pt-8 border-t border-charcoal-700 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-cream-400 text-sm">
+            &copy; {new Date().getFullYear()} The Sashiko Project. Open source under MIT license.
+          </p>
+          <p class="text-cream-400 text-sm">
+            Made with care for the sashiko community.
+          </p>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Mobile Menu Script -->
+    <script>
+      const menuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuIcon = menuButton?.querySelector('.menu-icon');
+      const closeIcon = menuButton?.querySelector('.close-icon');
+      
+      menuButton?.addEventListener('click', () => {
+        const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+        menuButton.setAttribute('aria-expanded', String(!isExpanded));
+        mobileMenu?.classList.toggle('hidden');
+        menuIcon?.classList.toggle('hidden');
+        closeIcon?.classList.toggle('hidden');
+      });
+    </script>
+  </body>
+</html>

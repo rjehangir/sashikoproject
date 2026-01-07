@@ -1,0 +1,102 @@
+---
+interface Pattern {
+  id: string;
+  name: string;
+  author: string;
+  license: string;
+  notes?: string;
+  tile?: {
+    svg: string;
+    viewBox: string;
+  };
+}
+
+interface Props {
+  pattern: Pattern;
+  showAuthor?: boolean;
+}
+
+const { pattern, showAuthor = true } = Astro.props;
+
+// Extract viewBox dimensions for aspect ratio
+const viewBox = pattern.tile?.viewBox || '0 0 100 100';
+const [, , vbWidth, vbHeight] = viewBox.split(' ').map(Number);
+const aspectRatio = vbWidth && vbHeight ? vbWidth / vbHeight : 1;
+
+// Clean and prepare SVG for display
+const svgContent = pattern.tile?.svg || '';
+---
+
+<a href={`/patterns/${pattern.id}`} class="pattern-card block group">
+  <!-- Pattern Preview -->
+  <div class="pattern-card-image bg-cream-100">
+    {svgContent ? (
+      <div 
+        class="w-full h-full p-6 flex items-center justify-center"
+        style={`aspect-ratio: ${aspectRatio};`}
+      >
+        <div 
+          class="pattern-preview w-full h-full"
+          set:html={svgContent.replace(
+            /<svg/,
+            '<svg class="w-full h-full" style="stroke: #334e68;"'
+          )}
+        />
+      </div>
+    ) : (
+      <div class="w-full h-full flex items-center justify-center text-charcoal-400">
+        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </div>
+    )}
+  </div>
+  
+  <!-- Pattern Info -->
+  <div class="pattern-card-content">
+    <h3 class="font-serif font-semibold text-lg text-charcoal-900 group-hover:text-indigo-700 transition-colors mb-1">
+      {pattern.name}
+    </h3>
+    {showAuthor && (
+      <p class="text-sm text-charcoal-500">
+        by {pattern.author}
+      </p>
+    )}
+    {pattern.notes && (
+      <p class="text-sm text-charcoal-600 mt-2 line-clamp-2">
+        {pattern.notes}
+      </p>
+    )}
+    
+    <!-- License Badge -->
+    <div class="mt-3 flex items-center gap-2">
+      <span class="text-xs px-2 py-1 bg-cream-100 text-charcoal-600 rounded">
+        {pattern.license}
+      </span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .pattern-preview :global(svg) {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .pattern-preview :global(path),
+  .pattern-preview :global(line),
+  .pattern-preview :global(polyline),
+  .pattern-preview :global(polygon),
+  .pattern-preview :global(circle),
+  .pattern-preview :global(rect) {
+    stroke: #334e68;
+    fill: none;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

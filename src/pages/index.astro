@@ -1,0 +1,244 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PatternCard from '../components/marketing/PatternCard.astro';
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Read patterns from filesystem at build time
+const patternsDir = path.join(process.cwd(), 'public', 'patterns');
+const indexPath = path.join(patternsDir, 'index.json');
+const patternIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+const patterns = patternIndex.patterns || [];
+
+// Load full pattern details
+const patternDetails = await Promise.all(
+  patterns.map(async (p: { id: string }) => {
+    try {
+      const filePath = path.join(patternsDir, `${p.id}.json`);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(content);
+    } catch {
+      return null;
+    }
+  })
+).then(results => results.filter(Boolean));
+---
+
+<BaseLayout 
+  title="The Sashiko Project"
+  description="Create beautiful sashiko embroidery patterns with our free online design tool. Explore traditional Japanese stitching patterns and bring this centuries-old craft into your creative projects."
+>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-warm">
+    <div class="absolute inset-0 bg-sashiko-pattern opacity-30"></div>
+    
+    <div class="container-marketing relative">
+      <div class="py-20 md:py-32 lg:py-40 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium mb-8 animate-fade-in">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          Free & Open Source
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-display font-serif font-bold text-charcoal-900 mb-6 animate-fade-in-up text-balance">
+          Create Beautiful<br class="hidden sm:inline" />
+          <span class="text-gradient">Sashiko Patterns</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-charcoal-600 max-w-2xl mx-auto mb-10 animate-fade-in-up" style="animation-delay: 100ms;">
+          Design, customize, and export traditional Japanese embroidery patterns. 
+          Whether you're a beginner or master stitcher, bring the art of sashiko to life.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style="animation-delay: 200ms;">
+          <a href="/design" class="btn-primary btn-lg w-full sm:w-auto">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+            </svg>
+            Start Designing
+          </a>
+          <a href="/patterns" class="btn-outline btn-lg w-full sm:w-auto">
+            Browse Patterns
+          </a>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-8 md:gap-16 mt-16 animate-fade-in-up" style="animation-delay: 300ms;">
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-serif font-bold text-indigo-700">{patterns.length}+</div>
+            <div class="text-charcoal-600 mt-1">Free Patterns</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-serif font-bold text-indigo-700">100%</div>
+            <div class="text-charcoal-600 mt-1">Open Source</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-serif font-bold text-indigo-700">PDF</div>
+            <div class="text-charcoal-600 mt-1">Export Ready</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About Sashiko Section -->
+  <section class="section bg-white">
+    <div class="container-marketing">
+      <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="relative">
+          <div class="aspect-square bg-indigo-900 rounded-3xl overflow-hidden shadow-warm">
+            <div class="absolute inset-0 flex items-center justify-center p-12">
+              <svg viewBox="0 0 200 200" class="w-full h-full text-cream-100/20">
+                <defs>
+                  <pattern id="sashiko-demo" patternUnits="userSpaceOnUse" width="40" height="40">
+                    <path d="M0 20 L20 0 L40 20 L20 40 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+                  </pattern>
+                </defs>
+                <rect width="200" height="200" fill="url(#sashiko-demo)"/>
+              </svg>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center text-cream-50 p-8">
+                <div class="text-6xl font-serif mb-4">刺し子</div>
+                <div class="text-lg opacity-80">Sashiko</div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-terracotta-400 rounded-2xl -z-10"></div>
+        </div>
+        
+        <div>
+          <span class="badge-primary mb-4">About Sashiko</span>
+          <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-900 mb-6">
+            A Centuries-Old Craft<br />for Modern Makers
+          </h2>
+          <p class="text-charcoal-600 text-lg leading-relaxed mb-6">
+            <strong>Sashiko</strong> (刺し子) is a traditional Japanese form of decorative reinforcement stitching 
+            that dates back to the Edo period. Originally used to strengthen and repair worn clothing, 
+            it has evolved into a beloved textile art form.
+          </p>
+          <p class="text-charcoal-600 text-lg leading-relaxed mb-8">
+            The geometric patterns—many inspired by nature and traditional motifs—create stunning 
+            visual effects through simple running stitches. Today, sashiko is celebrated worldwide 
+            for its meditative process and timeless beauty.
+          </p>
+          <a href="/techniques" class="btn-secondary">
+            Learn Sashiko Techniques
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pattern Gallery Section -->
+  <section class="section bg-cream-100">
+    <div class="container-marketing">
+      <div class="text-center mb-12 md:mb-16">
+        <span class="badge-primary mb-4">Pattern Library</span>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-900 mb-4">
+          Explore Traditional Patterns
+        </h2>
+        <p class="text-charcoal-600 text-lg max-w-2xl mx-auto">
+          Browse our collection of authentic sashiko patterns. Each design is ready to 
+          customize and stitch, from classic geometrics to nature-inspired motifs.
+        </p>
+      </div>
+      
+      {patternDetails.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {patternDetails.slice(0, 6).map((pattern) => (
+            <PatternCard pattern={pattern} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-charcoal-500">Patterns loading...</p>
+        </div>
+      )}
+      
+      {patterns.length > 6 && (
+        <div class="text-center mt-12">
+          <a href="/patterns" class="btn-outline">
+            View All {patterns.length} Patterns
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+  
+  <!-- Design Tool CTA Section -->
+  <section class="section bg-gradient-indigo text-cream-50">
+    <div class="container-marketing text-center">
+      <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6">
+        Ready to Create Your Own?
+      </h2>
+      <p class="text-cream-200 text-lg max-w-2xl mx-auto mb-10">
+        Our free design tool lets you create custom sashiko patterns, adjust stitch settings, 
+        and export print-ready PDFs for your projects.
+      </p>
+      <a href="/design" class="inline-flex items-center px-8 py-4 bg-cream-50 text-indigo-800 font-semibold rounded-lg hover:bg-cream-100 transition-colors shadow-lg">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+        </svg>
+        Open Design Tool
+      </a>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="section bg-white">
+    <div class="container-marketing">
+      <div class="text-center mb-12 md:mb-16">
+        <span class="badge-secondary mb-4">Features</span>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-charcoal-900 mb-4">
+          Everything You Need
+        </h2>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center p-6">
+          <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold text-charcoal-900 mb-3">Pattern Library</h3>
+          <p class="text-charcoal-600">
+            Access a growing collection of traditional and modern sashiko patterns, all free to use.
+          </p>
+        </div>
+        
+        <div class="text-center p-6">
+          <div class="w-16 h-16 bg-terracotta-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-terracotta-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold text-charcoal-900 mb-3">Customizable Settings</h3>
+          <p class="text-charcoal-600">
+            Adjust stitch length, gap size, and scale to match your fabric and thread preferences.
+          </p>
+        </div>
+        
+        <div class="text-center p-6">
+          <div class="w-16 h-16 bg-sage-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold text-charcoal-900 mb-3">PDF Export</h3>
+          <p class="text-charcoal-600">
+            Generate print-ready PDFs at any paper size with tiled pages for larger projects.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

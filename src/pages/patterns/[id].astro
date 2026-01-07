@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryGrid from '../../components/patterns/GalleryGrid.astro';
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface PatternTile {
+  svg: string;
+  viewBox: string;
+  size?: { width: number; height: number };
+}
+
+interface Pattern {
+  id: string;
+  name: string;
+  author: string;
+  license: string;
+  notes?: string;
+  tile?: PatternTile;
+}
+
+export async function getStaticPaths() {
+  const patternsDir = path.join(process.cwd(), 'public', 'patterns');
+  const indexPath = path.join(patternsDir, 'index.json');
+  const patternIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+  const patterns = patternIndex.patterns || [];
+  
+  return patterns.map((p: { id: string }) => {
+    try {
+      const filePath = path.join(patternsDir, `${p.id}.json`);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const pattern = JSON.parse(content) as Pattern;
+      return {
+        params: { id: p.id },
+        props: { pattern },
+      };
+    } catch {
+      return {
+        params: { id: p.id },
+        props: { pattern: null as Pattern | null },
+      };
+    }
+  }).filter((p: { props: { pattern: Pattern | null } }) => p.props.pattern !== null);
+}
+
+const { pattern } = Astro.props as { pattern: Pattern };
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": pattern.name,
+  "description": pattern.notes || `${pattern.name} sashiko pattern - traditional Japanese embroidery design`,
+  "author": {
+    "@type": "Person",
+    "name": pattern.author
+  },
+  "license": pattern.license,
+  "image": `/images/patterns/${pattern.id}-preview.png`,
+  "keywords": ["sashiko", "embroidery", "japanese", "pattern", pattern.name.toLowerCase()],
+};
+
+const svgContent = pattern.tile?.svg || '';
+---
+
+<BaseLayout 
+  title={`${pattern.name} - Sashiko Pattern`}
+  description={pattern.notes || `${pattern.name} is a traditional sashiko embroidery pattern. Download free and customize in our design tool.`}
+  image={`/images/patterns/${pattern.id}-og.png`}
+  type="article"
+>
+  <slot name="head">
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </slot>
+  
+  <article class="bg-cream-50">
+    <!-- Breadcrumbs -->
+    <nav class="container-marketing pt-6" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-sm text-charcoal-500">
+        <li>
+          <a href="/" class="hover:text-indigo-700 transition-colors">Home</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <a href="/patterns" class="hover:text-indigo-700 transition-colors">Patterns</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span class="text-charcoal-700 font-medium">{pattern.name}</span>
+        </li>
+      </ol>
+    </nav>
+    
+    <!-- Pattern Header -->
+    <section class="container-marketing py-12 md:py-16">
+      <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <!-- Pattern Preview -->
+        <div class="bg-white rounded-2xl shadow-warm overflow-hidden">
+          <div class="aspect-square p-8 md:p-12 flex items-center justify-center bg-cream-50">
+            {svgContent ? (
+              <div 
+                class="pattern-preview w-full h-full"
+                set:html={svgContent.replace(
+                  /<svg/,
+                  '<svg class="w-full h-full" style="stroke: #334e68;"'
+                )}
+              />
+            ) : (
+              <div class="text-charcoal-400 text-center">
+                <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <p>Preview not available</p>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <!-- Pattern Details -->
+        <div>
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-charcoal-900 mb-4">
+            {pattern.name}
+          </h1>
+          
+          <div class="flex flex-wrap items-center gap-4 mb-6">
+            <span class="text-charcoal-600">
+              by <span class="font-medium text-charcoal-800">{pattern.author}</span>
+            </span>
+            <span class="text-sm px-3 py-1 bg-cream-200 text-charcoal-700 rounded-full">
+              {pattern.license}
+            </span>
+          </div>
+          
+          {pattern.notes && (
+            <p class="text-lg text-charcoal-600 leading-relaxed mb-8">
+              {pattern.notes}
+            </p>
+          )}
+          
+          <!-- Pattern Metadata -->
+          {pattern.tile?.size && (
+            <div class="bg-white rounded-xl p-6 mb-8">
+              <h3 class="font-semibold text-charcoal-800 mb-4">Pattern Details</h3>
+              <dl class="grid grid-cols-2 gap-4">
+                <div>
+                  <dt class="text-sm text-charcoal-500">Tile Width</dt>
+                  <dd class="font-medium text-charcoal-800">{pattern.tile.size.width}mm</dd>
+                </div>
+                <div>
+                  <dt class="text-sm text-charcoal-500">Tile Height</dt>
+                  <dd class="font-medium text-charcoal-800">{pattern.tile.size.height}mm</dd>
+                </div>
+              </dl>
+            </div>
+          )}
+          
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href={`/design?pattern=${pattern.id}`} class="btn-primary btn-lg flex-1 text-center justify-center">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              Open in Design Tool
+            </a>
+            <button 
+              class="btn-outline btn-lg"
+              id="share-button"
+              aria-label="Share this pattern"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Community Gallery Section -->
+    <section class="bg-white py-16 md:py-20">
+      <div class="container-marketing">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-serif font-bold text-charcoal-900 mb-4">
+            Community Gallery
+          </h2>
+          <p class="text-charcoal-600 max-w-2xl mx-auto">
+            See how other makers have brought this pattern to life. 
+            Share your own creation to inspire others!
+          </p>
+        </div>
+        
+        <GalleryGrid patternId={pattern.id} />
+        
+        <!-- Submit Photo Button (placeholder) -->
+        <div class="text-center mt-12">
+          <button 
+            class="btn-secondary"
+            disabled
+            title="Coming soon"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            Submit Your Photo (Coming Soon)
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Related Patterns -->
+    <section class="bg-cream-100 py-16">
+      <div class="container-marketing text-center">
+        <h2 class="text-2xl md:text-3xl font-serif font-bold text-charcoal-900 mb-8">
+          Explore More Patterns
+        </h2>
+        <a href="/patterns" class="btn-outline">
+          View All Patterns
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+  </article>
+  
+  <script>
+    const shareButton = document.getElementById('share-button');
+    shareButton?.addEventListener('click', async () => {
+      const url = window.location.href;
+      const title = document.title;
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, url });
+        } catch (err) {
+          // User cancelled or error
+        }
+      } else {
+        await navigator.clipboard.writeText(url);
+        alert('Link copied to clipboard!');
+      }
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .pattern-preview :global(svg) {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .pattern-preview :global(path),
+  .pattern-preview :global(line),
+  .pattern-preview :global(polyline),
+  .pattern-preview :global(polygon),
+  .pattern-preview :global(circle),
+  .pattern-preview :global(rect) {
+    stroke: #334e68;
+    fill: none;
+  }
+</style>
