@@ -9,6 +9,7 @@ import { Header, SplitPane } from './components/layout';
 import { AdminPanel } from './features/admin';
 import { EditorPane } from './features/editor';
 import { ToolsPanel } from './features/tools';
+import { useAppStore } from './store';
 
 const GITHUB_URL = 'https://github.com/YOUR_USERNAME/sashiko';
 
@@ -16,6 +17,16 @@ function App() {
   const [showLibrary, setShowLibrary] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+
+  // Store state and actions
+  const resetPattern = useAppStore((s) => s.resetPattern);
+  const saveDraft = useAppStore((s) => s.saveDraft);
+  const svgContent = useAppStore((s) => s.svgContent);
+  const patternName = useAppStore((s) => s.patternName);
+  const patternAuthor = useAppStore((s) => s.patternAuthor);
+  const patternLicense = useAppStore((s) => s.patternLicense);
+  const patternNotes = useAppStore((s) => s.patternNotes);
+  const viewBox = useAppStore((s) => s.viewBox);
 
   // Keyboard shortcut for admin panel (Ctrl+Shift+A)
   useEffect(() => {
@@ -38,6 +49,29 @@ function App() {
 
   const handleOpenAdmin = useCallback(() => setShowAdmin(true), []);
   const handleCloseAdmin = useCallback(() => setShowAdmin(false), []);
+
+  const handleNewDesign = useCallback(() => {
+    const hasContent = svgContent.includes('<path') || svgContent.includes('<line');
+    if (hasContent) {
+      const confirmed = window.confirm(
+        'Start a new design? Any unsaved changes will be lost.\n\nTip: Use "Save Draft" to save your work first.'
+      );
+      if (!confirmed) return;
+    }
+    resetPattern();
+  }, [svgContent, resetPattern]);
+
+  const handleSaveDraft = useCallback(() => {
+    saveDraft({
+      name: patternName,
+      author: patternAuthor,
+      license: patternLicense,
+      notes: patternNotes,
+      svgContent,
+      viewBox,
+    });
+    window.alert(`Draft "${patternName}" saved! Find it in Library > My Drafts.`);
+  }, [saveDraft, patternName, patternAuthor, patternLicense, patternNotes, svgContent, viewBox]);
 
   const leftPanel = (
     <>
@@ -63,6 +97,8 @@ function App() {
       <Header
         title="The Sashiko Project"
         githubUrl={GITHUB_URL}
+        onNewDesign={handleNewDesign}
+        onSaveDraft={handleSaveDraft}
         onOpenLibrary={handleOpenLibrary}
         onOpenSubmit={handleOpenSubmit}
         onOpenAdmin={handleOpenAdmin}

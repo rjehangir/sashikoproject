@@ -44,6 +44,8 @@ export interface HeaderProps {
   onOpenLibrary?: () => void;
   onOpenSubmit?: () => void;
   onOpenAdmin?: () => void;
+  onNewDesign?: () => void;
+  onSaveDraft?: () => void;
 }
 
 export function Header({
@@ -52,6 +54,8 @@ export function Header({
   onOpenLibrary,
   onOpenSubmit,
   onOpenAdmin,
+  onNewDesign,
+  onSaveDraft,
 }: HeaderProps) {
   return (
     <header className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between">
@@ -62,6 +66,39 @@ export function Header({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
+          {onNewDesign && (
+            <Button variant="cyan" size="sm" onClick={onNewDesign} aria-label="Start a new design">
+              <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              New
+            </Button>
+          )}
+
+          {onSaveDraft && (
+            <Button
+              variant="violet"
+              size="sm"
+              onClick={onSaveDraft}
+              aria-label="Save current design as draft"
+            >
+              <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                />
+              </svg>
+              Save Draft
+            </Button>
+          )}
+
           {onOpenLibrary && (
             <Button
               variant="secondary"
