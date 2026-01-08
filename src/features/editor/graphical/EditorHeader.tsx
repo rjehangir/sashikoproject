@@ -49,10 +49,49 @@ export function EditorHeader({
     setSettingsExpanded: state.setSettingsExpanded,
   }));
 
-  const toolOptions: { value: Tool; label: string }[] = [
-    { value: 'select', label: 'Select' },
-    { value: 'draw', label: 'Draw' },
-  ];
+  // Tool icons for select and draw modes
+  const toolIcons: Record<Tool, { icon: React.ReactNode; label: string }> = {
+    select: {
+      label: 'Select (V)',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"
+          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 13l6 6" />
+        </svg>
+      ),
+    },
+    draw: {
+      label: 'Draw (D)',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+          />
+        </svg>
+      ),
+    },
+    pan: {
+      label: 'Pan',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"
+          />
+        </svg>
+      ),
+    },
+  };
 
   const handleColsChange = (newCols: number) => {
     setGridCols(newCols);
@@ -91,17 +130,26 @@ export function EditorHeader({
         <div className="flex items-center gap-4">
           {/* Tool Mode Selection */}
           <div className="flex gap-1" role="group" aria-label="Drawing tools">
-            {toolOptions.map((tool) => (
-              <Button
-                key={tool.value}
-                variant={activeTool === tool.value ? 'primary' : 'secondary'}
-                size="sm"
-                onClick={() => setActiveTool(tool.value)}
-                aria-pressed={activeTool === tool.value}
-              >
-                {tool.label}
-              </Button>
-            ))}
+            <Button
+              variant={activeTool === 'select' ? 'primary' : 'secondary'}
+              size="sm"
+              onClick={() => setActiveTool('select')}
+              aria-pressed={activeTool === 'select'}
+              aria-label={toolIcons.select.label}
+              title={toolIcons.select.label}
+            >
+              {toolIcons.select.icon}
+            </Button>
+            <Button
+              variant={activeTool === 'draw' ? 'primary' : 'secondary'}
+              size="sm"
+              onClick={() => setActiveTool('draw')}
+              aria-pressed={activeTool === 'draw'}
+              aria-label={toolIcons.draw.label}
+              title={toolIcons.draw.label}
+            >
+              {toolIcons.draw.icon}
+            </Button>
           </div>
 
           {/* Undo/Redo Buttons */}

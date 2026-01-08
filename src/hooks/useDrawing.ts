@@ -31,6 +31,8 @@ interface UseDrawingOptions {
   viewBoxHeight: number;
   activeTool: Tool;
   onLinesChange: (lines: Line[]) => void;
+  /** Called after a new line is successfully drawn */
+  onLineDrawn?: () => void;
 }
 
 interface UseDrawingReturn {
@@ -58,7 +60,7 @@ export function useDrawing(
   canvasRef: RefObject<SVGSVGElement | null>,
   options: UseDrawingOptions
 ): UseDrawingReturn {
-  const { snapToGrid: enableSnap, snapGridMm, activeTool, onLinesChange } = options;
+  const { snapToGrid: enableSnap, snapGridMm, activeTool, onLinesChange, onLineDrawn } = options;
 
   // Use history for undo/redo support
   const {
@@ -316,6 +318,7 @@ export function useDrawing(
           };
           const updatedLines = [...lines, newLine];
           setLines(updatedLines);
+          onLineDrawn?.();
         }
         setIsDrawing(false);
         setCurrentLine(null);
@@ -342,6 +345,7 @@ export function useDrawing(
       setLines,
       commitChange,
       onLinesChange,
+      onLineDrawn,
     ]
   );
 

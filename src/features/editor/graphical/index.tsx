@@ -19,6 +19,7 @@ export function GraphicalEditor() {
     strokeWidthMm,
     threadColor,
     activeTool,
+    setActiveTool,
     gridPadding,
     gridCols,
     gridRows,
@@ -33,6 +34,7 @@ export function GraphicalEditor() {
     strokeWidthMm: state.strokeWidthMm,
     threadColor: state.threadColor,
     activeTool: state.activeTool,
+    setActiveTool: state.setActiveTool,
     gridPadding: state.gridPadding,
     gridCols: state.gridCols,
     gridRows: state.gridRows,
@@ -86,6 +88,11 @@ export function GraphicalEditor() {
     [viewBox, setSvgContent, strokeWidthMm, threadColor]
   );
 
+  // Switch back to select mode after drawing a line
+  const handleLineDrawn = useCallback(() => {
+    setActiveTool('select');
+  }, [setActiveTool]);
+
   const {
     lines,
     resetLines,
@@ -107,6 +114,7 @@ export function GraphicalEditor() {
     viewBoxHeight,
     activeTool,
     onLinesChange: updateSvgFromLines,
+    onLineDrawn: handleLineDrawn,
   });
 
   // Parse SVG content to extract lines on initial load
